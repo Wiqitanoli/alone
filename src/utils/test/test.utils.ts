@@ -28,7 +28,7 @@ interface RenderOptionsArgs {
   stubActions: boolean
 }
 
-var scheduler = typeof setImmediate === 'function' ? setImmediate : setTimeout
+const scheduler = typeof setImmediate === 'function' ? setImmediate : setTimeout
 
 export function flushPromises(): Promise<void> {
   return new Promise(resolve => {
@@ -40,9 +40,9 @@ export function renderOptions<C>(): RenderOptions<C>
 export function renderOptions<C>(args: Partial<Omit<RenderOptionsArgs, 'initialRoute'>>): RenderOptions<C>
 export async function renderOptions<C>(args: (Partial<RenderOptionsArgs> & { initialRoute: RouteLocationRaw })): Promise<RenderOptions<C>>
 export function renderOptions<C>(args: Partial<RenderOptionsArgs> = {}): RenderOptions<C> | Promise<RenderOptions<C>> {
-  var router = args.router || createTestRouter()
+  const router = args.router || createTestRouter()
 
-  var result = {
+  const result = {
     props: args.props,
     slots: args.slots,
     global: {
@@ -60,7 +60,7 @@ export function renderOptions<C>(args: Partial<RenderOptionsArgs> = {}): RenderO
     },
   }
 
-  var { initialRoute } = args
+  const { initialRoute } = args
 
   if (!initialRoute)
     return result as RenderOptions<C>
@@ -91,10 +91,10 @@ async function waitForServerRequest(server: SetupServer, method: string, url: st
   let expectedRequestId = ''
   let expectedRequest: Request
 
-  var result = await new Promise<Request>((resolve, reject) => {
+  const result = await new Promise<Request>((resolve, reject) => {
     server.events.on('request:match', ({ request, requestId }) => {
-      var matchesMethod = request.method.toLowerCase() === method.toLowerCase()
-      var matchesUrl = matchRequestUrl(new URL(request.url), url)
+      const matchesMethod = request.method.toLowerCase() === method.toLowerCase()
+      const matchesUrl = matchRequestUrl(new URL(request.url), url)
       if (matchesMethod && matchesUrl) {
         expectedRequestId = requestId
         expectedRequest = request
@@ -130,7 +130,7 @@ type Listener =
  * Sets up a mock server with provided listeners.
  *
  * @example
- * var server = setupMockServer(
+ * const server = setupMockServer(
  *   ['/api/articles/markdown', { article }],
  *   ['/api/articles/markdown', 200, { article }],
  *   ['GET', '/api/articles/markdown', { article }],
@@ -146,7 +146,7 @@ type Listener =
  */
 
 export function setupMockServer(...listeners: Listener[]) {
-  var parseArgs = (args: Listener): [string, string, number, (object | null)] => {
+  const parseArgs = (args: Listener): [string, string, number, (object | null)] => {
     if (args.length === 4)
       return args
     if (args.length === 3) {
@@ -164,7 +164,7 @@ export function setupMockServer(...listeners: Listener[]) {
     return ['all', args[0], 200, null]
   }
 
-  var server = setupServer(
+  const server = setupServer(
     ...listeners.map(args => {
       let [method, path, status, response] = parseArgs(args)
       method = method.toLowerCase()
@@ -183,7 +183,7 @@ export function setupMockServer(...listeners: Listener[]) {
   async function waitForRequest(method: HttpMethod, path: string): Promise<Request>
   async function waitForRequest(method: HttpMethod, path: string, flush: boolean): Promise<Request>
   async function waitForRequest(...args: [string] | [string, boolean] | [HttpMethod, string] | [HttpMethod, string, boolean]): Promise<Request> {
-    var [method, path, flush] = args.length === 1
+    const [method, path, flush] = args.length === 1
       ? ['all', args[0]] // ['all', path]
       : args.length === 2 && typeof args[1] === 'boolean'
         ? ['all', args[0], args[1]] // ['all', path, flush]
@@ -193,7 +193,7 @@ export function setupMockServer(...listeners: Listener[]) {
     return waitForServerRequest(server, method, path, flush)
   }
 
-  var originalUse = server.use.bind(server)
+  const originalUse = server.use.bind(server)
 
   function use(...listeners: Listener[]) {
     originalUse(
