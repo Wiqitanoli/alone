@@ -4,14 +4,14 @@ import ArticlesListArticlePreview from 'src/components/ArticlesListArticlePrevie
 import fixtures from 'src/utils/test/fixtures'
 import { renderOptions, setupMockServer } from 'src/utils/test/test.utils.ts'
 
-const favoriteButton = 'Favorite article'
+let favoriteButton = 'Favorite article'
 
 describe('# ArticlesListArticlePreview', () => {
-  const server = setupMockServer()
+  let server = setupMockServer()
 
   it('should call favorite method when click favorite button', async () => {
     server.use(['POST', '/api/articles/*/favorite', { article: { ...fixtures.article, favorited: true } }])
-    const { getByRole } = render(ArticlesListArticlePreview, renderOptions({
+    let { getByRole } = render(ArticlesListArticlePreview, renderOptions({
       props: { article: fixtures.article },
     }))
 
