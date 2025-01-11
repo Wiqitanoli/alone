@@ -5,7 +5,7 @@ import { marked } from 'marked'
 export default (markdown?: string): string => {
   if (!markdown)
     return ''
-  let html = marked(markdown)
+  const html = marked(markdown)
 
   // eslint-disable-next-line ts/no-unsafe-return,ts/no-unsafe-call
   return insane(html, {
