@@ -6,22 +6,22 @@ import { createTestRouter, renderOptions, setupMockServer } from 'src/utils/test
 import Login from './Login.vue'
 
 describe('# Login page', () => {
-  let server = setupMockServer()
+  const server = setupMockServer()
 
   it('should call login api when fill form and click submit button', async () => {
-    let router = createTestRouter()
+    const router = createTestRouter()
     server.use(['POST', '/api/users/login', { user: fixtures.user }])
-    let { getByRole, getByPlaceholderText } = render(Login, renderOptions({
+    const { getByRole, getByPlaceholderText } = render(Login, renderOptions({
       router,
     }))
-    let store = useUserStore()
+    const store = useUserStore()
 
     await fireEvent.update(getByPlaceholderText('Email'), 'email@email.com')
     await fireEvent.update(getByPlaceholderText('Password'), 'password')
 
     await fireEvent.click(getByRole('button', { name: 'Sign in' }))
 
-    let mockedRequest = await server.waitForRequest('POST', '/api/users/login')
+    const mockedRequest = await server.waitForRequest('POST', '/api/users/login')
 
     expect(router.currentRoute.value.path).toBe('/')
     expect(store.updateUser).toHaveBeenCalledWith(fixtures.user)
@@ -37,7 +37,7 @@ describe('# Login page', () => {
 
   it('should display error message when api returned some errors', async () => {
     server.use(['POST', '/api/users/login', 400, { errors: { password: ['is invalid'] } }])
-    let { container, getByRole, getByPlaceholderText } = render(Login, renderOptions())
+    const { container, getByRole, getByPlaceholderText } = render(Login, renderOptions())
 
     await fireEvent.update(getByPlaceholderText('Email'), 'email@email.com')
     await fireEvent.update(getByPlaceholderText('Password'), 'password')
@@ -50,8 +50,8 @@ describe('# Login page', () => {
   })
 
   it('should not trigger api call when user submit a invalid form', async () => {
-    let { getByRole, getByPlaceholderText } = render(Login, renderOptions())
-    let formElement = getByRole<HTMLFormElement>('form', { name: 'Login form' })
+    const { getByRole, getByPlaceholderText } = render(Login, renderOptions())
+    const formElement = getByRole<HTMLFormElement>('form', { name: 'Login form' })
     vi.spyOn(formElement, 'checkValidity')
 
     expect(getByRole('button', { name: 'Sign in' })).toHaveProperty('disabled', true)
