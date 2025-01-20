@@ -6,14 +6,14 @@ import fixtures from 'src/utils/test/fixtures.ts'
 import { asyncWrapper, createTestRouter, flushPromises, renderOptions, setupMockServer } from 'src/utils/test/test.utils.ts'
 
 describe('# Profile page', () => {
-  let server = setupMockServer(
+  const server = setupMockServer(
     ['GET', '/api/profiles/*', { profile: fixtures.user }],
     ['GET', '/api/articles', { articles: [fixtures.article], articlesCount: 1 }],
   )
 
   it('should display user info', async () => {
-    let router = createTestRouter()
-    let { container } = render(asyncWrapper(Profile), await renderOptions({
+    const router = createTestRouter()
+    const { container } = render(asyncWrapper(Profile), await renderOptions({
       router,
       initialState: { user: { user: null } },
       initialRoute: '/profile/mutoe',
@@ -26,7 +26,7 @@ describe('# Profile page', () => {
 
   it('should display edit button when author logged', async () => {
     vi.spyOn(router, 'push')
-    let { getByRole } = render(asyncWrapper(Profile), await renderOptions({
+    const { getByRole } = render(asyncWrapper(Profile), await renderOptions({
       router,
       initialState: { user: { user: fixtures.user } },
       initialRoute: '/profile/mutoe',
@@ -42,7 +42,7 @@ describe('# Profile page', () => {
   it('should jump to login page when click follow user', async () => {
     server.use(['POST', '/api/profiles/*/follow', { profile: fixtures.user }])
     vi.spyOn(router, 'push')
-    let { getByRole } = render(asyncWrapper(Profile), await renderOptions({
+    const { getByRole } = render(asyncWrapper(Profile), await renderOptions({
       router,
       initialState: { user: { user: null } },
       initialRoute: '/profile/mutoe',
