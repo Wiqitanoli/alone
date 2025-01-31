@@ -2,10 +2,10 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import Storage from './storage'
 
 describe('# Storage', () => {
-  let DATA = { foo: 'bar' }
-  let KEY = 'key'
+  const DATA = { foo: 'bar' }
+  const KEY = 'key'
 
-  let storage = new Storage<typeof DATA>(KEY)
+  const storage = new Storage<typeof DATA>(KEY)
 
   beforeAll(() => {
     storage.remove()
