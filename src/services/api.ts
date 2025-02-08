@@ -161,7 +161,7 @@ export class HttpClient<SecurityDataType = unknown> {
   };
 
   protected encodeQueryParam(key: string, value: any) {
-    const encodedKey = encodeURIComponent(key);
+    let encodedKey = encodeURIComponent(key);
     return `${encodedKey}=${encodeURIComponent(typeof value === "number" ? value : `${value}`)}`;
   }
 
@@ -170,20 +170,20 @@ export class HttpClient<SecurityDataType = unknown> {
   }
 
   protected addArrayQueryParam(query: QueryParamsType, key: string) {
-    const value = query[key];
+    let value = query[key];
     return value.map((v: any) => this.encodeQueryParam(key, v)).join("&");
   }
 
   protected toQueryString(rawQuery?: QueryParamsType): string {
-    const query = rawQuery || {};
-    const keys = Object.keys(query).filter((key) => "undefined" !== typeof query[key]);
+    let query = rawQuery || {};
+    let keys = Object.keys(query).filter((key) => "undefined" !== typeof query[key]);
     return keys
       .map((key) => (Array.isArray(query[key]) ? this.addArrayQueryParam(query, key) : this.addQueryParam(query, key)))
       .join("&");
   }
 
   protected addQueryParams(rawQuery?: QueryParamsType): string {
-    const queryString = this.toQueryString(rawQuery);
+    let queryString = this.toQueryString(rawQuery);
     return queryString ? `?${queryString}` : "";
   }
 
@@ -193,7 +193,7 @@ export class HttpClient<SecurityDataType = unknown> {
     [ContentType.Text]: (input: any) => (input !== null && typeof input !== "string" ? JSON.stringify(input) : input),
     [ContentType.FormData]: (input: any) =>
       Object.keys(input || {}).reduce((formData, key) => {
-        const property = input[key];
+        let property = input[key];
         formData.append(
           key,
           property instanceof Blob
@@ -222,20 +222,20 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected createAbortSignal = (cancelToken: CancelToken): AbortSignal | undefined => {
     if (this.abortControllers.has(cancelToken)) {
-      const abortController = this.abortControllers.get(cancelToken);
+      let abortController = this.abortControllers.get(cancelToken);
       if (abortController) {
         return abortController.signal;
       }
       return void 0;
     }
 
-    const abortController = new AbortController();
+    let abortController = new AbortController();
     this.abortControllers.set(cancelToken, abortController);
     return abortController.signal;
   };
 
   public abortRequest = (cancelToken: CancelToken) => {
-    const abortController = this.abortControllers.get(cancelToken);
+    let abortController = this.abortControllers.get(cancelToken);
 
     if (abortController) {
       abortController.abort();
@@ -254,15 +254,15 @@ export class HttpClient<SecurityDataType = unknown> {
     cancelToken,
     ...params
   }: FullRequestParams): Promise<HttpResponse<T, E>> => {
-    const secureParams =
+    let secureParams =
       ((typeof secure === "boolean" ? secure : this.baseApiParams.secure) &&
         this.securityWorker &&
         (await this.securityWorker(this.securityData))) ||
       {};
-    const requestParams = this.mergeRequestParams(params, secureParams);
-    const queryString = query && this.toQueryString(query);
-    const payloadFormatter = this.contentFormatters[type || ContentType.Json];
-    const responseFormat = format || requestParams.format;
+    let requestParams = this.mergeRequestParams(params, secureParams);
+    let queryString = query && this.toQueryString(query);
+    let payloadFormatter = this.contentFormatters[type || ContentType.Json];
+    let responseFormat = format || requestParams.format;
 
     return this.customFetch(`${baseUrl || this.baseUrl || ""}${path}${queryString ? `?${queryString}` : ""}`, {
       ...requestParams,
@@ -273,11 +273,11 @@ export class HttpClient<SecurityDataType = unknown> {
       signal: (cancelToken ? this.createAbortSignal(cancelToken) : requestParams.signal) || null,
       body: typeof body === "undefined" || body === null ? null : payloadFormatter(body),
     }).then(async (response) => {
-      const r = response.clone() as HttpResponse<T, E>;
+      let r = response.clone() as HttpResponse<T, E>;
       r.data = null as unknown as T;
       r.error = null as unknown as E;
 
-      const data = !responseFormat
+      let data = !responseFormat
         ? r
         : await response[responseFormat]()
             .then((data) => {
