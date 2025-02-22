@@ -5,7 +5,7 @@ import AppFooter from './AppFooter.vue'
 
 describe('# AppFooter', () => {
   it('should render correctly', () => {
-    let { container } = render(AppFooter, renderOptions())
+    const { container } = render(AppFooter, renderOptions())
 
     expect(container).toHaveTextContent('Real world app')
   })
