@@ -10,13 +10,13 @@ interface useFavoriteArticleProps {
 }
 
 export function useFavoriteArticle({ isFavorited, articleSlug, onUpdate }: useFavoriteArticleProps) {
-  let favoriteArticle = async () => {
-    let requestor = isFavorited.value ? api.articles.deleteArticleFavorite : api.articles.createArticleFavorite
-    let article = await requestor(articleSlug.value).then(res => res.data.article)
+  const favoriteArticle = async () => {
+    const requestor = isFavorited.value ? api.articles.deleteArticleFavorite : api.articles.createArticleFavorite
+    const article = await requestor(articleSlug.value).then(res => res.data.article)
     onUpdate(article)
   }
 
-  let { active, run } = useAsync(favoriteArticle)
+  const { active, run } = useAsync(favoriteArticle)
 
   return {
     favoriteProcessGoing: active,
