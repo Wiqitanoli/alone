@@ -5,9 +5,9 @@ import { asyncWrapper, renderOptions, setupMockServer } from 'src/utils/test/tes
 import ArticleDetailComments from './ArticleDetailComments.vue'
 
 describe('# ArticleDetailComments', () => {
-  // const mockDeleteComment = deleteComment as jest.MockedFunction<typeof deleteComment>
+  // let mockDeleteComment = deleteComment as jest.MockedFunction<typeof deleteComment>
 
-  const server = setupMockServer(
+  let server = setupMockServer(
     ['GET', '/api/profiles/*', { profile: fixtures.author }],
     ['GET', '/api/articles/*/comments', { comments: [fixtures.comment] }],
     ['POST', '/api/articles/*/comments', { comment: fixtures.comment2 }],
@@ -15,7 +15,7 @@ describe('# ArticleDetailComments', () => {
   )
 
   it('should render correctly', async () => {
-    const { container } = render(asyncWrapper(ArticleDetailComments), await renderOptions({
+    let { container } = render(asyncWrapper(ArticleDetailComments), await renderOptions({
       initialRoute: { name: 'article', params: { slug: fixtures.article.slug } },
       initialState: { user: { user: null } },
     }))
@@ -26,7 +26,7 @@ describe('# ArticleDetailComments', () => {
   })
 
   it('should display new comment when post new comment', async () => {
-    const { container, getByRole } = render(asyncWrapper(ArticleDetailComments), await renderOptions({
+    let { container, getByRole } = render(asyncWrapper(ArticleDetailComments), await renderOptions({
       initialRoute: { name: 'article', params: { slug: fixtures.article.slug } },
       initialState: { user: { user: fixtures.user } },
     }))
@@ -41,7 +41,7 @@ describe('# ArticleDetailComments', () => {
   })
 
   it('should call remove comment service when click delete button', async () => {
-    const { container, getByRole } = render(asyncWrapper(ArticleDetailComments), await renderOptions({
+    let { container, getByRole } = render(asyncWrapper(ArticleDetailComments), await renderOptions({
       initialRoute: { name: 'article', params: { slug: fixtures.article.slug } },
       initialState: { user: { user: fixtures.user } },
     }))
