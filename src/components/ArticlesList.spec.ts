@@ -5,12 +5,12 @@ import { asyncWrapper, renderOptions, setupMockServer } from 'src/utils/test/tes
 import ArticlesList from './ArticlesList.vue'
 
 describe('# ArticlesList', () => {
-  const server = setupMockServer(
+  let server = setupMockServer(
     ['GET', '/api/articles*', { articles: [fixtures.article], articlesCount: 1 }],
   )
 
   it('should render correctly', async () => {
-    const { container } = render(asyncWrapper(ArticlesList), renderOptions())
+    let { container } = render(asyncWrapper(ArticlesList), renderOptions())
 
     await server.waitForRequest('GET', '/api/articles*')
 
