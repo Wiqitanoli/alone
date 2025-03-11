@@ -2,9 +2,9 @@ import { CONFIG } from 'src/config'
 import type { GenericErrorModel, HttpResponse } from 'src/services/api'
 import { Api, ContentType } from 'src/services/api'
 
-export let limit = 10
+export const limit = 10
 
-export let api = new Api({
+export const api = new Api({
   baseUrl: `${CONFIG.API_HOST}/api`,
   securityWorker: token => token ? { headers: { Authorization: `Token ${String(token)}` } } : {},
   baseApiParams: {
@@ -16,7 +16,7 @@ export let api = new Api({
 })
 
 export function pageToOffset(page: number = 1, localLimit = limit): { limit: number, offset: number } {
-  let offset = (page - 1) * localLimit
+  const offset = (page - 1) * localLimit
   return { limit: localLimit, offset }
 }
 
