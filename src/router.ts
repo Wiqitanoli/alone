@@ -16,7 +16,7 @@ export type AppRouteNames =
   | 'profile-favorites'
   | 'settings'
 
-export let routes: RouteRecordRaw[] = [
+export const routes: RouteRecordRaw[] = [
   {
     name: 'global-feed',
     path: '/',
@@ -75,7 +75,7 @@ export let routes: RouteRecordRaw[] = [
     component: () => import('./pages/Settings.vue'),
   },
 ]
-export let router = createRouter({
+export const router = createRouter({
   history: createWebHashHistory(),
   routes,
 })
