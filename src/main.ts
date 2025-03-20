@@ -5,7 +5,7 @@ import registerGlobalComponents from './plugins/global-components'
 import setAuthorizationToken from './plugins/set-authorization-token'
 import { router } from './router'
 
-let app = createApp(App)
+const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
