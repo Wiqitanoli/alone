@@ -6,7 +6,7 @@ import { renderOptions } from 'src/utils/test/test.utils.ts'
 
 describe('# ArticlesListNavigation', () => {
   it('should render global feed item when passed global feed prop', () => {
-    let { container } = render(ArticlesListNavigation, renderOptions({
+    const { container } = render(ArticlesListNavigation, renderOptions({
       initialState: { user: { user: fixtures.user } },
       props: { tag: '', username: '', useGlobalFeed: true },
     }))
@@ -15,7 +15,7 @@ describe('# ArticlesListNavigation', () => {
   })
 
   it('should render full item', () => {
-    let { container } = render(ArticlesListNavigation, renderOptions({
+    const { container } = render(ArticlesListNavigation, renderOptions({
       initialState: { user: { user: fixtures.user } },
       props: { tag: 'foo', username: '', useGlobalFeed: true, useMyFeed: true, useTagFeed: true },
     }))
