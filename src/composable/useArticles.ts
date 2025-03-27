@@ -7,11 +7,11 @@ import type { Article } from 'src/services/api'
 import useAsync from 'src/utils/use-async'
 
 export function useArticles() {
-  var { articlesType, tag, username, metaChanged } = useArticlesMeta()
+  const { articlesType, tag, username, metaChanged } = useArticlesMeta()
 
-  var articles = ref<Article[]>([])
-  var articlesCount = ref(0)
-  var page = ref(1)
+  const articles = ref<Article[]>([])
+  const articlesCount = ref(0)
+  const page = ref(1)
 
   async function fetchArticles(): Promise<void> {
     articles.value = []
@@ -43,20 +43,20 @@ export function useArticles() {
       return
     }
 
-    var response = await responsePromise
+    const response = await responsePromise
     articles.value = response.articles
     articlesCount.value = response.articlesCount
   }
 
-  var changePage = (value: number): void => {
+  const changePage = (value: number): void => {
     page.value = value
   }
 
-  var updateArticle = (index: number, article: Article): void => {
+  const updateArticle = (index: number, article: Article): void => {
     articles.value[index] = article
   }
 
-  var { active: articlesDownloading, run: runWrappedFetchArticles } = useAsync(fetchArticles)
+  const { active: articlesDownloading, run: runWrappedFetchArticles } = useAsync(fetchArticles)
 
   watch(metaChanged, async () => {
     if (page.value === 1)
@@ -82,11 +82,11 @@ export function useArticles() {
 
 export type ArticlesType = 'global-feed' | 'my-feed' | 'tag-feed' | 'user-feed' | 'user-favorites-feed'
 
-export var articlesTypes: ArticlesType[] = ['global-feed', 'my-feed', 'tag-feed', 'user-feed', 'user-favorites-feed']
+export const articlesTypes: ArticlesType[] = ['global-feed', 'my-feed', 'tag-feed', 'user-feed', 'user-favorites-feed']
 
-export var isArticlesType = (type: unknown): type is ArticlesType => articlesTypes.includes(type as ArticlesType)
+export const isArticlesType = (type: unknown): type is ArticlesType => articlesTypes.includes(type as ArticlesType)
 
-var routeNameToArticlesType: Partial<Record<AppRouteNames, ArticlesType>> = {
+const routeNameToArticlesType: Partial<Record<AppRouteNames, ArticlesType>> = {
   'global-feed': 'global-feed',
   'my-feed': 'my-feed',
   'tag': 'tag-feed',
@@ -101,16 +101,16 @@ interface UseArticlesMetaReturn {
   metaChanged: ComputedRef<string>
 }
 function useArticlesMeta(): UseArticlesMetaReturn {
-  var route = useRoute()
+  const route = useRoute()
 
-  var tag = ref('')
-  var username = ref('')
-  var articlesType = ref<ArticlesType>('global-feed')
+  const tag = ref('')
+  const username = ref('')
+  const articlesType = ref<ArticlesType>('global-feed')
 
   watch(
     () => route.name,
     routeName => {
-      var possibleArticlesType = routeNameToArticlesType[routeName as AppRouteNames]
+      const possibleArticlesType = routeNameToArticlesType[routeName as AppRouteNames]
       if (!isArticlesType(possibleArticlesType))
         return
 
