@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { api } from 'src/services'
 
 export function useTags() {
-  const tags = ref<string[]>([])
+  let tags = ref<string[]>([])
 
   async function fetchTags(): Promise<void> {
     tags.value = []
