@@ -6,7 +6,7 @@ import ArticleDetailComment from './ArticleDetailComment.vue'
 
 describe('# ArticleDetailComment', () => {
   it('should render correctly', () => {
-    let { container, queryByRole } = render(ArticleDetailComment, renderOptions({
+    const { container, queryByRole } = render(ArticleDetailComment, renderOptions({
       props: { comment: fixtures.comment },
     }))
 
@@ -16,7 +16,7 @@ describe('# ArticleDetailComment', () => {
   })
 
   it('should delete comment button when comment author is same user', () => {
-    let { getByRole } = render(ArticleDetailComment, renderOptions({
+    const { getByRole } = render(ArticleDetailComment, renderOptions({
       props: {
         comment: fixtures.comment,
         username: fixtures.author.username,
@@ -27,8 +27,8 @@ describe('# ArticleDetailComment', () => {
   })
 
   it('should emit remove comment when click remove comment button', async () => {
-    let onRemoveComment = vi.fn()
-    let { getByRole } = render(ArticleDetailComment, renderOptions({
+    const onRemoveComment = vi.fn()
+    const { getByRole } = render(ArticleDetailComment, renderOptions({
       props: {
         comment: fixtures.comment,
         username: fixtures.author.username,
