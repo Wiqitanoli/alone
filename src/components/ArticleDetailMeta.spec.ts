@@ -5,18 +5,18 @@ import fixtures from 'src/utils/test/fixtures'
 import { renderOptions, setupMockServer } from 'src/utils/test/test.utils.ts'
 import ArticleDetailMeta from './ArticleDetailMeta.vue'
 
-let editButton = 'Edit article'
-let deleteButton = 'Delete article'
-let followButton = 'Follow'
-let unfollowButton = 'Unfollow'
-let favoriteButton = 'Favorite article'
-let unfavoriteButton = 'Unfavorite article'
+const editButton = 'Edit article'
+const deleteButton = 'Delete article'
+const followButton = 'Follow'
+const unfollowButton = 'Unfollow'
+const favoriteButton = 'Favorite article'
+const unfavoriteButton = 'Unfavorite article'
 
 describe('# ArticleDetailMeta', () => {
-  let server = setupMockServer()
+  const server = setupMockServer()
 
   it('should display edit button when user is author', () => {
-    let { getByRole, queryByRole } = render(ArticleDetailMeta, renderOptions({
+    const { getByRole, queryByRole } = render(ArticleDetailMeta, renderOptions({
       initialState: { user: { user: fixtures.user } },
       props: { article: fixtures.article },
     }))
@@ -26,7 +26,7 @@ describe('# ArticleDetailMeta', () => {
   })
 
   it('should display follow button when user not author', () => {
-    let { getByRole, queryByRole } = render(ArticleDetailMeta, renderOptions({
+    const { getByRole, queryByRole } = render(ArticleDetailMeta, renderOptions({
       initialState: { user: { user: { ...fixtures.user, username: 'user2' } } },
       props: { article: fixtures.article },
     }))
@@ -36,7 +36,7 @@ describe('# ArticleDetailMeta', () => {
   })
 
   it('should not display follow button and edit button when user not logged', () => {
-    let { queryByRole } = render(ArticleDetailMeta, renderOptions({
+    const { queryByRole } = render(ArticleDetailMeta, renderOptions({
       initialState: { user: { user: null } },
       props: { article: fixtures.article },
     }))
@@ -47,7 +47,7 @@ describe('# ArticleDetailMeta', () => {
 
   it('should call delete article service when click delete button', async () => {
     server.use(['DELETE', '/api/articles/*'])
-    let { getByRole } = render(ArticleDetailMeta, renderOptions({
+    const { getByRole } = render(ArticleDetailMeta, renderOptions({
       initialState: { user: { user: fixtures.user } },
       props: { article: fixtures.article },
     }))
@@ -58,10 +58,10 @@ describe('# ArticleDetailMeta', () => {
   })
 
   it('should call follow service when click follow button', async () => {
-    let newProfile: Profile = { ...fixtures.user, following: true }
+    const newProfile: Profile = { ...fixtures.user, following: true }
     server.use(['POST', '/api/profiles/*/follow', { profile: newProfile }])
-    let onUpdate = vi.fn()
-    let { getByRole } = render(ArticleDetailMeta, renderOptions({
+    const onUpdate = vi.fn()
+    const { getByRole } = render(ArticleDetailMeta, renderOptions({
       initialState: { user: { user: { ...fixtures.user, username: 'user2' } } },
       props: { article: fixtures.article, onUpdate },
     }))
@@ -73,10 +73,10 @@ describe('# ArticleDetailMeta', () => {
   })
 
   it('should call unfollow service when click follow button and not followed author', async () => {
-    let newProfile: Profile = { ...fixtures.user, following: false }
+    const newProfile: Profile = { ...fixtures.user, following: false }
     server.use(['DELETE', '/api/profiles/*/follow', { profile: newProfile }])
-    let onUpdate = vi.fn()
-    let { getByRole } = render(ArticleDetailMeta, renderOptions({
+    const onUpdate = vi.fn()
+    const { getByRole } = render(ArticleDetailMeta, renderOptions({
       initialState: { user: { user: { ...fixtures.user, username: 'user2' } } },
       props: {
         article: { ...fixtures.article, author: { ...fixtures.article.author, following: true } },
@@ -93,7 +93,7 @@ describe('# ArticleDetailMeta', () => {
 
   it('should call favorite article service when click favorite button', async () => {
     server.use(['POST', '/api/articles/*/favorite', { article: { ...fixtures.article, favorited: true } }])
-    let { getByRole } = render(ArticleDetailMeta, renderOptions({
+    const { getByRole } = render(ArticleDetailMeta, renderOptions({
       initialState: { user: { user: { ...fixtures.user, username: 'user2' } } },
       props: { article: { ...fixtures.article, favorited: false } },
     }))
@@ -105,7 +105,7 @@ describe('# ArticleDetailMeta', () => {
 
   it('should call favorite article service when click unfavorite button', async () => {
     server.use(['DELETE', '/api/articles/*/favorite', { article: { ...fixtures.article, favorited: false } }])
-    let { getByRole } = render(ArticleDetailMeta, renderOptions({
+    const { getByRole } = render(ArticleDetailMeta, renderOptions({
       initialState: { user: { user: { ...fixtures.user, username: 'user2' } } },
       props: { article: { ...fixtures.article, favorited: true } },
     }))
