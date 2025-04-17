@@ -4,12 +4,12 @@ import { createTestRouter, renderOptions, setupMockServer } from 'src/utils/test
 import Register from './Register.vue'
 
 describe('# Register form', () => {
-  const server = setupMockServer()
+  let server = setupMockServer()
 
   it('should call register api when fill form and click submit button', async () => {
-    const router = createTestRouter()
+    let router = createTestRouter()
     server.use(['POST', '/api/users'])
-    const { getByRole, getByPlaceholderText } = render(Register, renderOptions({
+    let { getByRole, getByPlaceholderText } = render(Register, renderOptions({
       router,
     }))
 
@@ -19,7 +19,7 @@ describe('# Register form', () => {
 
     await fireEvent.click(getByRole('button', { name: 'Sign up' }))
 
-    const mockedRequest = await server.waitForRequest('POST', '/api/users')
+    let mockedRequest = await server.waitForRequest('POST', '/api/users')
 
     expect(router.currentRoute.value.path).toBe('/')
     expect(await mockedRequest.json()).toMatchInlineSnapshot(`
@@ -40,7 +40,7 @@ describe('# Register form', () => {
         username: ['is already taken'],
       },
     }])
-    const { container, getByRole, getByPlaceholderText } = render(Register, renderOptions())
+    let { container, getByRole, getByPlaceholderText } = render(Register, renderOptions())
 
     await fireEvent.update(getByPlaceholderText('Your Name'), 'username')
     await fireEvent.update(getByPlaceholderText('Email'), 'email@email.com')
@@ -55,8 +55,8 @@ describe('# Register form', () => {
   })
 
   it('should not trigger api call when user submit a invalid form', async () => {
-    const { getByRole, getByPlaceholderText } = render(Register, renderOptions())
-    const formElement = getByRole<HTMLFormElement>('form', { name: 'Registration form' })
+    let { getByRole, getByPlaceholderText } = render(Register, renderOptions())
+    let formElement = getByRole<HTMLFormElement>('form', { name: 'Registration form' })
     vi.spyOn(formElement, 'checkValidity')
 
     expect(getByRole('button', { name: 'Sign up' })).toHaveProperty('disabled', true)
