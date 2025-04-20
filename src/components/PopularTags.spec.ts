@@ -4,12 +4,12 @@ import PopularTags from 'src/components/PopularTags.vue'
 import { asyncWrapper, renderOptions, setupMockServer } from 'src/utils/test/test.utils'
 
 describe('# PopularTags', () => {
-  let server = setupMockServer(
+  const server = setupMockServer(
     ['GET', '/api/tags', { tags: ['tag1', 'tag2'] }],
   )
 
   it('should render correctly', async () => {
-    let { getAllByRole } = render(asyncWrapper(PopularTags), renderOptions())
+    const { getAllByRole } = render(asyncWrapper(PopularTags), renderOptions())
 
     await server.waitForRequest('GET', '/api/tags')
 
